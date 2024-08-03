@@ -19,9 +19,9 @@ MonoBehaviour:
   UserAsset:
     Id:
       Value: 0
-  Scene: QuantumGameScene
-  ScenePath: Assets/QuantumUser/Scenes/QuantumGameScene.unity
-  SceneGuid: 451aef38abd72f34699892a4eba531a1
+  Scene: AsteroidsGameplay
+  ScenePath: Assets/Scenes/AsteroidsGameplay.unity
+  SceneGuid: d19a891f93d4d83468b1fd8efeb191a7
   WorldSize: 256
   BucketsCount: 16
   BucketsSubdivisions: 8

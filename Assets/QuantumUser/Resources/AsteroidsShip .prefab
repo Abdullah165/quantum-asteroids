@@ -208,7 +208,7 @@ MonoBehaviour:
     LayerSource: 0
     Layer: 0
     CallbackFlags:
-      Value: 0
+      Value: 2
   PhysicsBody:
     IsEnabled: 1
     Config2D: 116
@@ -316,7 +316,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Prototype:
-    _empty_prototype_dummy_field_: 0
+    ShipConfig:
+      Id:
+        Value: 485120248427358429
+    FireInterval:
+      RawValue: 0
 --- !u!1 &5272768148175480962
 GameObject:
   m_ObjectHideFlags: 0

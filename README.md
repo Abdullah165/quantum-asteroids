@@ -1,2 +1,2 @@
 # quantum-asteroids
- Simple multi-player game using Photon Quantum
+Simple multiplayer game using Photon Quantum

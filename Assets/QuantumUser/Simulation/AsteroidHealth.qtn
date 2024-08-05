@@ -1,0 +1,2 @@
+
+signal TakeDamage(CollisionInfo2D info,EntityRef entity, FP damage);

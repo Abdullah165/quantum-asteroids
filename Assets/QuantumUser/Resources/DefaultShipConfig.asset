@@ -24,6 +24,12 @@ MonoBehaviour:
     RawValue: 6554
   ShotOffset:
     RawValue: 65536
+  InitialMaxHealth:
+    RawValue: 6553600
+  CurrentHealth:
+    RawValue: 0
+  DamageAmount:
+    RawValue: 655360
   ProjectilePrototype:
     Id:
       Value: 1449189350755531510

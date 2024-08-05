@@ -17,6 +17,10 @@ namespace Quantum
         [Tooltip("Displacement of the projectile spawn position related to the ship position")]
         public FP ShotOffset = 1;
 
+        public FP InitialMaxHealth = 100;
+        public FP CurrentHealth = 100;
+        public FP DamageAmount = 10;
+
         [Tooltip("Prototype reference to spawn ship projectiles")]
         public AssetRef<EntityPrototype> ProjectilePrototype;
     }

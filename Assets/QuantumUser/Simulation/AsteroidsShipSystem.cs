@@ -1,13 +1,25 @@
 using Photon.Deterministic;
+using System.Diagnostics;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Quantum.Asteroids
 {
-    public unsafe class AsteroidsShipSystem : SystemMainThreadFilter<AsteroidsShipSystem.Filter>, ISignalOnCollisionAsteroidHitShip
+    public unsafe class AsteroidsShipSystem : SystemMainThreadFilter<AsteroidsShipSystem.Filter>, ISignalOnCollisionAsteroidHitShip, ISignalTakeDamage
     {
+        public override void OnInit(Frame f)
+        {
+            foreach (var entity in f.Unsafe.GetComponentBlockIterator<AsteroidsShip>())
+            {
+                var ship = f.Unsafe.GetPointer<AsteroidsShip>(entity.Entity);
+                var config = f.FindAsset(ship->ShipConfig);
+                config.CurrentHealth = config.InitialMaxHealth;
+            }
+        }
+
         public override void Update(Frame f, ref Filter filter)
         {
             Input* input = default;
-            if(f.Unsafe.TryGetPointer(filter.Entity,out PlayerLink* playerLink))
+            if (f.Unsafe.TryGetPointer(filter.Entity, out PlayerLink* playerLink))
             {
                 input = f.GetPlayerInput(playerLink->PlayerRef);
             }
@@ -27,8 +39,24 @@ namespace Quantum.Asteroids
 
         public void OnCollisionAsteroidHitShip(Frame f, CollisionInfo2D info, AsteroidsShip* ship, AsteroidsAsteroid* asteroid)
         {
-            f.Destroy(info.Entity);
+            var config = f.FindAsset(ship->ShipConfig);
+
+            f.Signals.TakeDamage(info, info.Entity, config.DamageAmount);
         }
+
+        public void TakeDamage(Frame f, CollisionInfo2D info, EntityRef entity, FP damage)
+        {
+            var ship = f.Unsafe.GetPointer<AsteroidsShip>(entity);
+            var config = f.FindAsset(ship->ShipConfig);
+            config.CurrentHealth -= damage;
+
+            if (config.CurrentHealth <= 0)
+            {
+                config.CurrentHealth = config.InitialMaxHealth;
+                f.Destroy(entity);
+            }
+        }
+
 
         private void UpdateShipMovement(Frame f, ref Filter filter, Input* input)
         {
@@ -71,5 +99,6 @@ namespace Quantum.Asteroids
                 filter.AsteroidsShip->FireInterval -= f.DeltaTime;
             }
         }
+
     }
 }

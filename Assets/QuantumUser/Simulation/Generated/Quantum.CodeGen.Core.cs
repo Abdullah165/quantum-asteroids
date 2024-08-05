@@ -612,6 +612,9 @@ namespace Quantum {
         PlayerRef.Serialize(&p->PlayerRef, serializer);
     }
   }
+  public unsafe partial interface ISignalTakeDamage : ISignal {
+    void TakeDamage(Frame f, CollisionInfo2D info, EntityRef entity, FP damage);
+  }
   public unsafe partial interface ISignalSpawnAsteroid : ISignal {
     void SpawnAsteroid(Frame f, AssetRef<EntityPrototype> childPrototype, EntityRef parent);
   }
@@ -630,6 +633,7 @@ namespace Quantum {
   public static unsafe partial class Constants {
   }
   public unsafe partial class Frame {
+    private ISignalTakeDamage[] _ISignalTakeDamageSystems;
     private ISignalSpawnAsteroid[] _ISignalSpawnAsteroidSystems;
     private ISignalOnCollisionProjectileHitShip[] _ISignalOnCollisionProjectileHitShipSystems;
     private ISignalOnCollisionProjectileHitAsteroid[] _ISignalOnCollisionProjectileHitAsteroidSystems;
@@ -646,6 +650,7 @@ namespace Quantum {
     }
     partial void InitGen() {
       Initialize(this, this.SimulationConfig.Entities, 256);
+      _ISignalTakeDamageSystems = BuildSignalsArray<ISignalTakeDamage>();
       _ISignalSpawnAsteroidSystems = BuildSignalsArray<ISignalSpawnAsteroid>();
       _ISignalOnCollisionProjectileHitShipSystems = BuildSignalsArray<ISignalOnCollisionProjectileHitShip>();
       _ISignalOnCollisionProjectileHitAsteroidSystems = BuildSignalsArray<ISignalOnCollisionProjectileHitAsteroid>();
@@ -722,6 +727,15 @@ namespace Quantum {
       Physics3D.Init(_globals->PhysicsState3D.MapStaticCollidersState.TrackedMap);
     }
     public unsafe partial struct FrameSignals {
+      public void TakeDamage(CollisionInfo2D info, EntityRef entity, FP damage) {
+        var array = _f._ISignalTakeDamageSystems;
+        for (Int32 i = 0; i < array.Length; ++i) {
+          var s = array[i];
+          if (_f.SystemIsEnabledInHierarchy((SystemBase)s)) {
+            s.TakeDamage(_f, info, entity, damage);
+          }
+        }
+      }
       public void SpawnAsteroid(AssetRef<EntityPrototype> childPrototype, EntityRef parent) {
         var array = _f._ISignalSpawnAsteroidSystems;
         for (Int32 i = 0; i < array.Length; ++i) {

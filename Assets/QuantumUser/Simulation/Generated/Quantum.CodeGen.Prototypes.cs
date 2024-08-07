@@ -86,6 +86,7 @@ namespace Quantum.Prototypes {
   public unsafe partial class AsteroidsShipPrototype : ComponentPrototype<Quantum.AsteroidsShip> {
     public AssetRef<AsteroidsShipConfig> ShipConfig;
     public FP FireInterval;
+    public FP CurrentHealth;
     partial void MaterializeUser(Frame frame, ref Quantum.AsteroidsShip result, in PrototypeMaterializationContext context);
     public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
         Quantum.AsteroidsShip component = default;
@@ -95,6 +96,7 @@ namespace Quantum.Prototypes {
     public void Materialize(Frame frame, ref Quantum.AsteroidsShip result, in PrototypeMaterializationContext context = default) {
         result.ShipConfig = this.ShipConfig;
         result.FireInterval = this.FireInterval;
+        result.CurrentHealth = this.CurrentHealth;
         MaterializeUser(frame, ref result, in context);
     }
   }

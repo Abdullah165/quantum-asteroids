@@ -574,23 +574,27 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct AsteroidsShip : Quantum.IComponent {
-    public const Int32 SIZE = 16;
+    public const Int32 SIZE = 24;
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(0)]
     public AssetRef<AsteroidsShipConfig> ShipConfig;
-    [FieldOffset(8)]
+    [FieldOffset(16)]
     public FP FireInterval;
+    [FieldOffset(8)]
+    public FP CurrentHealth;
     public override Int32 GetHashCode() {
       unchecked { 
         var hash = 13043;
         hash = hash * 31 + ShipConfig.GetHashCode();
         hash = hash * 31 + FireInterval.GetHashCode();
+        hash = hash * 31 + CurrentHealth.GetHashCode();
         return hash;
       }
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (AsteroidsShip*)ptr;
         AssetRef.Serialize(&p->ShipConfig, serializer);
+        FP.Serialize(&p->CurrentHealth, serializer);
         FP.Serialize(&p->FireInterval, serializer);
     }
   }

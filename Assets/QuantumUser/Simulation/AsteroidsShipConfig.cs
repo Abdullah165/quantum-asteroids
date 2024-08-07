@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Quantum
 {
-    public class AsteroidsShipConfig : AssetObject
+    public unsafe class AsteroidsShipConfig : AssetObject
     {
         [Tooltip("The speed that the ship turns with added as torque")]
         public FP ShipTurnSpeed = 8;
@@ -18,10 +18,20 @@ namespace Quantum
         public FP ShotOffset = 1;
 
         public FP InitialMaxHealth = 100;
-        public FP CurrentHealth = 100;
         public FP DamageAmount = 10;
 
         [Tooltip("Prototype reference to spawn ship projectiles")]
         public AssetRef<EntityPrototype> ProjectilePrototype;
+
+        public void TakeDamage(Frame f, EntityRef entity, FP damage)
+        {
+            var ship = f.Unsafe.GetPointer<AsteroidsShip>(entity);
+            ship->CurrentHealth -= damage;
+
+            if (ship->CurrentHealth <= 0)
+            {
+                f.Destroy(entity);
+            }
+        }
     }
 }

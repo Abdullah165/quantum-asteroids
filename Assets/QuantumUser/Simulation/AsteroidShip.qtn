@@ -2,4 +2,5 @@ component AsteroidsShip
 {
   AssetRef<AsteroidsShipConfig> ShipConfig;
   FP FireInterval;
+  FP CurrentHealth;
 }

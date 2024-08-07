@@ -26,8 +26,6 @@ MonoBehaviour:
     RawValue: 65536
   InitialMaxHealth:
     RawValue: 6553600
-  CurrentHealth:
-    RawValue: 0
   DamageAmount:
     RawValue: 655360
   ProjectilePrototype:
